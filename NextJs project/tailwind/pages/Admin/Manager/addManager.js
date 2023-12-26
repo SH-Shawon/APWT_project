@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import React ,{ useState,useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Home from '@/pages/component/navbar';
 import Cookies from "js-cookie";
+import { requireAuthentication } from '@/pages/component/auth';
 
 export default function SignUpForm() {
+  const router = useRouter();
+  useEffect(() => {
+    requireAuthentication(router);
+  }, []);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [managerId, setManagerId] = useState('');
@@ -15,9 +20,10 @@ export default function SignUpForm() {
   const [emailError, setEmailError] = useState('');
   const [idError, setManagerIdError] = useState('');
   const [nameError, setNameError] = useState('');
-  const adminId = typeof window !== 'undefined' ? localStorage.getItem('Admin') : null;
+  const adminId = Cookies.get("Admin");
  console.log("admin is"+ adminId);
-  const router = useRouter();
+ //alert(adminId);
+  
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -66,7 +72,7 @@ export default function SignUpForm() {
       });
 
         if (response.data && !response.data.message) {
-            console.log(response.data);
+          router.push(`/Admin/Manager/${managerId}`);
           // Account created successfully
          // router.push('signin');
         } else {
@@ -91,9 +97,11 @@ export default function SignUpForm() {
   };
 
   const isValidId = (id) => {
-    const idPattern = /^\d+$/; // Only digits
+    // Allow any character in the ID
+    const idPattern = /^.*$/;
     return idPattern.test(id);
   };
+  
   const isValidPassword = (password) => {
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z\d@$!%*?&]{6,}$/;
     return passwordPattern.test(password);
@@ -160,3 +168,7 @@ export default function SignUpForm() {
     </div></>
   );
 }
+
+
+
+

@@ -2,15 +2,26 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Link from "next/link";
 import jwt_decode from "jwt-decode";
 import { decode } from "jwt-decode";
 
 
 export default function LoginForm() {
+  const router = useRouter();
+    const loginCookie = Cookies.get("Admin");
+    if( loginCookie){
+      router.push(({
+        pathname: './'+loginCookie,
+
+    }));
+    }
+
+
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
+
 
   const handleChangeId = (e) => {
     setId(e.target.value);
@@ -116,6 +127,12 @@ export default function LoginForm() {
           >
             Sign in
           </button>
+          <p className="mt-2 text-sm">
+            Don't have an account?Register{" "}
+            <a href="/Admin/signup" className="text-blue-500">
+             here
+            </a>
+          </p>
         </div>
       </form>
     </div>

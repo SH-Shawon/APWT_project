@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import Header from './header';
 const Navbar = () => {
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
   const [adminEmail, setAdminEmail] = useState('');
@@ -55,17 +56,17 @@ const Navbar = () => {
   return (
     <>
       <nav className="bg-purple-200 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <title>Home</title>
+        <Header title='Admin'/>
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 relative">
-          <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <a href="/Admin" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Admin</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">ABC E-commerce site</span>
           </a>
           <div className="ml-auto flex items-center space-x-8">
             <ul className="flex flex-row items-center space-x-4">
               <li>
-                <a href="#" className="text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500">
-                  Navbar
+                <a href="/Admin/Manager/addManager" className="text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500">
+                  Add Manager
                 </a>
               </li>
               <li>
@@ -99,7 +100,7 @@ const Navbar = () => {
               id="user-dropdown"
             >
               <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+                <span className="block text-sm text-gray-900 dark:text-white">Shawon</span>
                 <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{adminEmail}</span>
               </div>
               <ul className="py-2" aria-labelledby="user-menu-button">

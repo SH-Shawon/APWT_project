@@ -197,6 +197,12 @@ export default function SignUpForm() {
         <button type="submit" className="bg-purple-100 hover:bg-yellow-400 px-4 py-3 text-sm font-semibold inline-block">
           Sign Up
         </button>
+        <p className="mt-2 text-sm">
+            Already have an account? Sign in{" "}
+            <a href="/Admin/signin" className="text-blue-500">
+               here
+            </a>
+          </p>
       </form>
     </div>
   );

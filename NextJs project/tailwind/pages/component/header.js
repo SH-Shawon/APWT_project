@@ -4,7 +4,7 @@ export default function Header(promps){
         <>
         <Head>
             <link rel="icon" type="image/x-icon" href="img_1.png"/>
-            <title>My {promps.title}</title>
+            <title>{promps.title}</title>
         </Head>
          
         </>
