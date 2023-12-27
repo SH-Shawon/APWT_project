@@ -1,10 +1,9 @@
-
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { requireAuthentication } from '@/pages/component/auth';
 
-export default function ManagerDetails({ manager }) {
+const ManagerDetails = ({ manager }) => {
   const router = useRouter();
   useEffect(() => {
     requireAuthentication(router);
@@ -32,6 +31,10 @@ export default function ManagerDetails({ manager }) {
     }
   };
 
+  const handleSendMail = () => {
+    router.push(`/Admin/Manager/${manager.manager.managerId}/Email`);
+  };
+
   return (
     <div className="container mx-auto my-8">
       <h2 className="text-3xl font-bold mb-4">Manager Details</h2>
@@ -55,9 +58,6 @@ export default function ManagerDetails({ manager }) {
           <strong>Blood Group:</strong> {manager.manager.bloodGroup || 'Not available'}
         </p>
         <p className="mb-2">
-          <strong>Password:</strong> {manager.manager.password}
-        </p>
-        <p className="mb-2">
           <strong>Profile Picture:</strong> {manager.manager.pic || 'Not available'}
         </p>
         <p className="mb-2">
@@ -77,10 +77,18 @@ export default function ManagerDetails({ manager }) {
         >
           Delete
         </button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+          onClick={handleSendMail}
+        >
+          Send Mail
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default ManagerDetails;
 
 export async function getServerSideProps(context) {
   const { managerId } = context.query;

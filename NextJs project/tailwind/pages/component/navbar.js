@@ -70,8 +70,8 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500">
-                  Services
+                <a href="/Admin/Supplier/supplierList" className="text-gray-900 hover:text-blue-700 dark:text-white dark:hover:text-blue-500">
+                  Supplier
                 </a>
               </li>
               <li>

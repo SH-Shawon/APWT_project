@@ -1,53 +1,58 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import Home from '@/pages/component/navbar';
 import { requireAuthentication } from '@/pages/component/auth';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Home from '@/pages/component/navbar';
+import { useRouter } from 'next/router';
 
-export default function ManagersList() {
-  const router = useRouter();
+const SupplierList = () => {
+    const router = useRouter();
     useEffect(() => {
       requireAuthentication(router);
     }, []);
-  const [managers, setManagers] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const [error, setError] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
-  const handleDetailsClick = (managerId) => {
-    router.push(`/Admin/Manager/${managerId}`);
+
+  const handleDetailsClick = (supplierId) => {
+    router.push(`/Admin/Supplier/${supplierId}`);
   };
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/admin/getManagerById/${searchValue}`);
+      const response = await axios.get(`http://localhost:3000/admin/getSupplierById/${searchValue}`);
 
-      if (response.data && response.data.managers) {
-        setManagers([response.data.managers]);
+      if (response.data && response.data.supplier) {
+        setSuppliers([response.data.supplier]);
         setError('');
       } else {
-        setManagers([]);
+        setSuppliers([]);
         setError('No match found');
       }
     } catch (error) {
       console.error(error);
-      setManagers([]); // Set managers to an empty array in case of an error
+      setSuppliers([]); // Set suppliers to an empty array in case of an error
       setError('Something went wrong');
     }
+  };
+
+  const handleAddSupplier = () => {
+    router.push('/Admin/Supplier/addSupplier'); // Change the route based on your actual route structure
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/admin/getAllManagers');
+        const response = await axios.get('http://localhost:3000/admin/getAllSupplier');
 
-        if (response.data && response.data.managers) {
-          setManagers(response.data.managers);
+        if (response.data && response.data.supplier) {
+          setSuppliers(response.data.supplier);
         } else {
-          setError('Unable to fetch managers');
+          setError('Unable to fetch suppliers');
         }
       } catch (error) {
         console.error(error);
-        setManagers([]);
+        setSuppliers([]);
         setError('Something went wrong');
       }
     };
@@ -57,13 +62,14 @@ export default function ManagersList() {
 
   return (
     <>
+      <Home />
       <div className="container mx-auto my-8">
         <div className="flex items-center mb-4">
-          <h2 className="text-2xl font-bold mr-4">Managers List</h2>
+          <h2 className="text-2xl font-bold mr-4">Suppliers List</h2>
           <input
             type="text"
-            id="adminId"
-            placeholder="Enter Admin ID"
+            id="searchValue"
+            placeholder="Search Supplier"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             className="border p-2 rounded-md mr-2"
@@ -74,30 +80,34 @@ export default function ManagersList() {
           >
             Search
           </button>
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2"
+            onClick={handleAddSupplier}
+          >
+            Add Supplier
+          </button>
         </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {managers.length > 0 ? (
+        {suppliers.length > 0 ? (
           <table className="min-w-full border border-gray-300">
             <thead>
               <tr>
                 <th className="py-2 px-4 border-b">ID</th>
                 <th className="py-2 px-4 border-b">Name</th>
                 <th className="py-2 px-4 border-b">Email</th>
-                <th className="py-2 px-4 border-b">Join</th>
                 <th className="py-2 px-4 border-b">Details</th>
               </tr>
             </thead>
             <tbody>
-              {managers.map((manager) => (
-                <tr key={manager.id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b">{manager?.manager?.managerId || 'N/A'}</td>
-                  <td className="py-2 px-4 border-b">{manager?.manager?.name || 'N/A'}</td>
-                  <td className="py-2 px-4 border-b">{manager?.manager?.gmail || 'N/A'}</td>
-                  <td className="py-2 px-4 border-b">{manager?.manager?.joiningTime || 'N/A'}</td>
+              {suppliers.map((supplier) => (
+                <tr key={supplier.supplierId} className="hover:bg-gray-100">
+                  <td className="py-2 px-4 border-b">{supplier?.supplierId || 'N/A'}</td>
+                  <td className="py-2 px-4 border-b">{supplier?.name || 'N/A'}</td>
+                  <td className="py-2 px-4 border-b">{supplier?.gmail || 'N/A'}</td>
                   <td className="py-2 px-4 border-b">
                     <button
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={() => handleDetailsClick(manager?.manager?.managerId)}
+                      onClick={() => handleDetailsClick(supplier?.supplierId)}
                     >
                       Details
                     </button>
@@ -112,7 +122,6 @@ export default function ManagersList() {
       </div>
     </>
   );
-}
+};
 
-
-
+export default SupplierList;
